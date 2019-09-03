@@ -1,4 +1,4 @@
-const HashMap = require('./HashMap');
+const HashMap = require('./HashMapChaining');
 
 function main(){
   HashMap.MAX_LOAD_RATIO = 0.5;
@@ -17,9 +17,10 @@ function main(){
   lor.set('HalfElven', 'Arwen');
   lor.set('Ent', 'Treebeard'); // not all items will be added technically because they get overwritten by later values
   
-  console.log(lor);
-  console.log(lor.get('Maiar')); //Sauron
-  console.log(lor.get('Hobbit')); //Frodo
+  console.log(lor._hashTable);
+  console.log(lor.get('LadyOfLight'));
+//   console.log(lor.get('Maiar')); //Sauron
+//   console.log(lor.get('Hobbit')); //Frodo
   //this is not a discrepency because of the fact that it is overwriting the old value with the new input;
   //our curent simple function only creates an object at the correct index
 
@@ -52,3 +53,78 @@ const WhatDoesThisDo = function(){
 //    | 28 | 20 | 12 |    | 5 | 15 |    | 17 |
 //      19                      33
 //      10                  
+
+function removeDups(str){
+  let noDups = new HashMap();
+  let result = '';
+  for(let i=0; i<str.length; i++){
+    try {
+      noDups.get(str[i]);
+    }
+    catch(e) {
+      noDups.set(str[i]);
+      result += str[i];
+    }
+  }
+  return result;
+}
+// console.log(removeDups('google all that you think can think of'));
+
+function plainMap(str){
+  let palin = new HashMap();
+  for(let i=0; i<str.length; i++){
+    try{
+      palin.get(str[i]);
+      palin.set(str[i],palin.get(str[i])+1);
+    }
+    catch(e) {
+      palin.set(str[i], 1);
+    }
+  }
+  let odd = 0;
+  let even = 0;
+  for(let i=0; i<str.length; i++){
+    palin.get(str[i])%2 === 0 ? even++ : odd++;
+  }
+  if(str.length%2 === 0 && odd === 0){
+    return true;
+  } else if (str.length%2 !== 0 && odd === 1){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// console.log(plainMap('acecarr'));
+// console.log(plainMap('hannah'));
+// console.log(plainMap('north'));
+
+function anagramGroup(arr){
+  const anaGrp = new HashMap();
+  let num = 1;
+  for (const ele of arr){
+    for(let i=0; i<ele.length; i++){
+      try{
+        anaGrp.get(ele[i]);
+      }
+      catch(e){
+        anaGrp.set(ele[i], num);
+        num *= 10;
+      }
+    }
+  }
+  let result = {};
+  for (const ele of arr){
+    let tot = 0;
+    for(let i=0; i<ele.length; i++){
+      tot += anaGrp.get(ele[i]);
+    }
+    if(!result[`${tot}`]){
+      result[`${tot}`] = [];
+    }
+    result[`${tot}`].push(ele);
+  }
+
+  return Object.values(result);
+}
+// console.log(anagramGroup(['east', 'cars', 'acre', 'arcs', 'teas', 'eats', 'race']));
