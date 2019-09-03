@@ -18,9 +18,12 @@ function main(){
   lor.set('Ent', 'Treebeard'); // not all items will be added technically because they get overwritten by later values
   
   console.log(lor._hashTable);
-  console.log(lor.get('LadyOfLight'));
-//   console.log(lor.get('Maiar')); //Sauron
-//   console.log(lor.get('Hobbit')); //Frodo
+  console.log(lor.get('Hobbit'));
+  console.log(lor.delete('Hobbit', 'Frodo'));
+  console.log(lor.get('Hobbit'));
+
+  //   console.log(lor.get('Maiar')); //Sauron
+  //   console.log(lor.get('Hobbit')); //Frodo
   //this is not a discrepency because of the fact that it is overwriting the old value with the new input;
   //our curent simple function only creates an object at the correct index
 

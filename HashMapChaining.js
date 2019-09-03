@@ -33,28 +33,35 @@ class HashMap {
       this.length++;
       this._hashTable[index] = {
         key,
-        value: data
+        value: data,
+        DELETED: false
       }; 
     } else {
       let value = new LinkedList();
       value.insertFirst(this._hashTable[index].value);
       this._hashTable[index] = {
         key,
-        value
+        value,
+        DELETED: false
       };
       this._hashTable[index].value.insertLast(data);
     }
   }
 
-  delete(key) {
+  delete(key, node='') {
     const index = this._findSlot(key);
     const slot = this._hashTable[index];
     if (slot === undefined) {
       throw new Error('Key error');
     }
-    slot.DELETED = true;
-    this.length--;
-    this._deleted++;
+
+    if(node !== ''){
+      return this._hashTable[index].value.remove(node);
+    } else {
+      slot.DELETED = true;
+      this.length--;
+      this._deleted++;
+    }
   }
 
   _findSlot(key) {
